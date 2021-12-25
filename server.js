@@ -4,7 +4,6 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
-const upload = multer({ dest: "dist/files/" });
 const path = require("path");
 const fs = require("fs");
 
@@ -15,7 +14,7 @@ const app = express();
 //Change filename set by multer back to default with the right extension
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "dist/files/"));
+    cb(null, path.join(__dirname, "files/"));
   },
   filename: function (req, file, cb) {
     cb(null, file.originalname);
