@@ -1,0 +1,27 @@
+<%-include("partials/nav") %>
+<div class="spacer"></div>
+<div class="spacer"></div>
+
+<div class="container mt-2 resources-container">
+  <div class="input-group search-container">
+    <input
+      type="text"
+      class="form-control"
+      id="resource-search"
+      placeholder="Enter your search term"
+      aria-label="Search for..."
+    />
+    <div class="input-group-append">
+      <button class="btn resources-search-btn" type="button">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="skel-loader-cont skeleton-loader-resources">
+  </div>
+  <div class="main-content"></div>
+	<ul id="pagination-btns" class="pagination"></ul>
+  <%-include("partials/scripts") %>
+   <%-include("partials/footer") %>
+</div>

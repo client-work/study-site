@@ -1,0 +1,109 @@
+<%-include("partials/nav") %> 
+<div class="spacer"></div>
+
+<div class="my-login-page">
+<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+				
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">Register</h4>
+              <div class="d-flex justify-content-center d-none log-in-loader loader mb-2 mt-2">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Logging in...</span>
+  </div>
+</div> 
+							<form class="my-login-validation needs-validation sign-up-form" >
+								<div class="form-group has-validation">
+									<label for="name">Name</label>
+									<input aria-label="name" id="name" type="text" class="form-control" name="name" required autofocus>
+									<div class="invalid-feedback">
+										Please provide your name
+									</div>
+								</div>
+                <div class="form-group">
+                <label for="select">Which level of Education are you</label>
+        <select class="form-select" 
+        id='edu-level'aria-label="Level of education" name='edulevel'>
+        <option value=''selected>Select one</option>
+        <option value="High-School">High School</option>
+        <option value="Campus">Campus</option>
+        <option value="Other">Another one</option>
+      </select>
+      </div>
+								<div class="form-group">
+									<label for="email">E-Mail Address</label>
+									<input aria-label="email" id="email" type="email" class="form-control " name="email" required>
+								<span class="email-taken  error d-none text-danger">The email address is already in use by another account.</span>
+								</div>
+
+								<div class="form-group">
+									<label for="password">Password</label>
+									<input id="password" type="password" class="form-control" name="password" required data-eye>
+                  <i class="bi bi-eye-slash" id="togglePassword"></i>
+									<div class="invalid-feedback">
+										Password is required
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="conpassword">Confirm password</label>
+									<input id="conpassword" type="password" class="form-control " name="conpassword" required data-eye>
+                  
+									<div class="invalid-feedback">
+									Confirmation	Password does not match
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="custom-checkbox custom-control">
+										
+										<label for="agree" class="custom-control-label"><input type="checkbox" name="agree" id="agree" class="custom-control-input is-invalid">  I agree to the <a href="#">Terms and Conditions</a></label>                 
+                     <span class="agree-error   error d-none text-danger">Please agree with our terms to continue</span>
+									</div>
+								</div>
+
+								<div class="form-group m-0">
+                
+									<button type="submit" class="btn btn-lg  btn-block"
+                  id='register-btn'>
+										Register
+									</button>
+                  </div>
+                  <p style="text-align: center; width: 100%; margin-top: .6rem;">or</p>
+                  <div class="form-group m-0">
+                   <span class="edulevel-error lead  error d-none text-danger">Please choose education level to continue</span>
+									<button type="submit" class="btn btn-lg btn-social btn-google" id='g-signup'>
+										Sign up with Google
+									</button>
+                  
+								</div>
+								<div class="mt-4 text-center">
+									Already have an account? <a href="/login">Login</a>
+								</div>
+							</form>
+						</div>
+					</div>
+</div>
+
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto lead">SUCCESS</strong>
+    <button type="button" class="btn btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body lead">
+    Verification email sent. Please wait as we redirect you
+  </div>
+</div>
+
+					<div class="footer">
+						Copyright &copy; 2020 &mdash; Study 
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+  </div>
+
+<%-include("partials/scripts") %> 

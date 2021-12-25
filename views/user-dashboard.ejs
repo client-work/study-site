@@ -1,0 +1,204 @@
+
+<%-include("partials/meta") %> 
+    
+      <body>
+
+    <header id="header" class="fixed-top d-flex align-items-center">
+      <div class="container d-flex align-items-center justify-content-between">
+
+        <div class="logo">
+          <!-- <h1><a href="/">Study</a></h1> -->
+          <!-- Uncomment below if you prefer to use an image logo -->
+          <a href="/" class="navbar-brand"><img 
+            src="/assets/img/book-logo.jpg"
+             alt="Logo"
+             class="img-fluid" /></a>
+        </div>
+        <nav id="navbar" class="navbar">
+          <ul>
+                      <li><a class="nav-link scrollto active" href="/#hero">Home</a></li>
+            <li><a class="nav-link scrollto" href="/#about">About Us</a></li>
+            <li><a class="nav-link scrollto" href="/#testimonials">Testimonials</a></li>
+            <li><a class="nav-link scrollto" href="/#contact">Contact Us</a></li>
+            <li><b><a class="nav-link scrollto" href="/resources">Resources</a></b></li>
+            
+          </ul>
+          <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- .navbar -->
+
+      </div>
+    </header>
+
+
+
+
+
+<div class="spacer"></div>
+<div class="spacer"></div>
+
+<div class='not-verified d-none'>
+ <span class="not-verified error text-danger">Please verify your email Address. If you did not receive it click <a id='resend' href='#'  ><u> Here</u></a> to resend </span>
+</div>
+<div class='w-100 d-flex justify-center d-none upload-container'>
+<button class="btn w-60 btn-lg  mb-2 btn-block"
+   id='upload-btn'>
+				Upload
+			</button>
+      </div>
+<div class="container-fluid pb-4 user-dashborad-container">
+  <div class="favourite-notes-container">
+    <h2>Favourite Notes</h2>
+<div class='fave-holder favourite-notes d-flex justify-between'>
+</div>
+
+	
+    <div class="skel-loader-cont fave-skeleton-loader fave-load" style='width: 100%; display: flex; justify-content: space-evenly;'>
+   <div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    
+ </div>
+   <div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    
+ </div>
+  </div>
+ <ul id="fave-btns" class="pagination mt-2"></ul>
+
+</div>
+  <div class="user-profile">
+    <h2>User Profile</h2>
+    <div class="personal-info">
+    <p>Personal Information</p> 
+    <div class="d-flex justify-content-center  loader mb-2 mt-2">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div> 
+
+ 
+      <img src="" alt="User Image" class='d-none' id='u-image'/>
+       <p class='name-cont d-none'>
+        <b>Name:</b>
+   <span class='u-name'></span>
+      </p>
+      <p class='class-cont d-none'>
+        <b>Class:</b>
+        <span class='u-class'></span>
+      </p>
+      <button class="btn btn-lg  btn-block edit-profile-btn" 
+      >Edit</button>
+      <button class="btn btn-lgbtn-lg mt-2 btn-block" id='log-out-btn'>Log Out</button>
+    </div>
+    <div class="contribution-info">
+    <h4>Your Contributions</h4>
+      <div class="d-flex justify-content-center  contributions-loader mb-2 mt-2">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Loading...</span>
+    </div>
+    </div>
+    <div class="contribution-info-cont"></div>
+    </div>
+  
+
+  </div>
+
+
+
+  <div class="prev-visited">
+    <div class="favourite-notes-container">
+    <h2>Previously Visited</h2>
+ <div class='prev-holder favourite-notes d-flex justify-between'>
+</div>
+
+	
+    <div class="skel-loader-cont fave-skeleton-loader prev-load" style='width: 100%; display: flex; justify-content: space-evenly;'>
+   <div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    
+ </div>
+   <div>
+    <div class="skeleton-loader"></div>
+    <div class="skeleton-loader"></div>
+    
+ </div>
+  </div>
+<ul id="prev-btns" class="pagination mt-2"></ul>
+</div>
+  </div>
+
+</div>
+
+
+<div  class="u-modal modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close-modal"><i class="fas fa-times-circle"></i></span>
+   <div class="my-login-page" id='modal-update'>
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+			
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">Update Profile</h4>
+              <span class='updating d-none'>Updating...</span>
+              <div class="d-flex justify-content-center d-none infor-update-loader loader mb-2 mt-2">
+  <div class="spinner-border" role="status">
+    <span class="sr-only">Updating...</span>
+  </div>
+</div> 
+							<form method="POST" class="my-login-validation update-form" >
+								<div class="form-group">
+									<label for="email">E-Mail Address <br>
+                  <span class='text-success' >Current: <span class='u-email'></span> </span>
+                  </label>
+                  
+									<input id="email" type="email" class="form-control" name="email" value="" >
+								</div>
+								<div class="form-group">
+									<label for="name">Username  <br>
+                  <span class='text-success' >Current:  <span class='u-name'></span> </span></label>
+									<input id="name" type="text" class="form-control" name="name" value=""  >
+								</div>
+
+								
+						
+   <div  class="form-group  edu-level-log-in-cont" >
+                <label for="select">Education Level  <br>
+                  <span class='text-success' >Current: <span class='u-class'></span>  </span></label>
+        <select class="form-select" 
+        id='edu-level-log-in'aria-label="Level of education" name='edulevel'>
+        <option value=''selected>Select one</option>
+        <option value="High-School">High School</option>
+        <option value="Campus">Campus</option>
+        <option value="Other">Another one</option>
+      </select>
+      </div>
+      <div class="form-group mt-2">
+      		<label for="u-image">Profile Picture <br>
+									<input accept="image/png, image/jpeg"   id="u-image" type="file" class="form-control" name="u-image"  >
+								</div>
+                
+    
+								<div class="form-group mt-2">
+									<button type="submit" class="btn btn-lg  btn-block">
+									Update
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+  </div>
+ 
+ 
+  
+
+<%-include("partials/scripts") %> 
+<%-include("partials/footer") %>
