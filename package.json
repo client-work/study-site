@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node server.js"
   },
-  "keywords": ["Free online study", "Online study site", "Online study site for students"],
+  "keywords": [
+    "Free online study",
+    "Online study site",
+    "Online study site for students"
+  ],
   "author": "Masiga Allan",
   "license": "ISC",
   "dependencies": {
