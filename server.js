@@ -108,6 +108,6 @@ app.get("/contribution-failed", (req, res) =>
 
 app.get("*", (req, res) => res.status(404).render("404"));
 
-port = 3000;
+port = process.env.PORT || 3000;
 
 app.listen(port, () => console.log(`App running on port ${port}`));
