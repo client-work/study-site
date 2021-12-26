@@ -4,6 +4,7 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
+const upload = multer();
 const path = require("path");
 const fs = require("fs");
 
@@ -12,17 +13,10 @@ const { join } = require("path");
 const app = express();
 
 //Change filename set by multer back to default with the right extension
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null,  "files/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
+
 
 //Creating file in working directory with the right extension
-const uploadFile = multer({ storage: storage });
+
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -38,7 +32,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-app.post("/contribution", uploadFile.single("content"), (req, res) => {
+app.post("/contribution", upload.single("content"), (req, res) => {
   const { name, details, email, uid } = req.body;
   const msg = `Name: ${name}\nEmail: ${email}\nDetails: ${details}\nUser ID: ${uid}`;
 
@@ -59,17 +53,11 @@ app.post("/contribution", uploadFile.single("content"), (req, res) => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.log(err);
-        console.log("Deleted successfully");
-      });
+     
       res.redirect("/contribution-failed");
     } else {
       console.log("Email sent: " + info.response);
-      fs.unlink(req.file.path, (err) => {
-        if (err) console.log(err);
-        console.log("Deleted successfully");
-      });
+      
       res.redirect("/contribution-success");
     }
   });
