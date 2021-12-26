@@ -4,10 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "node server.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["Free online study", "Online study site", "Online study site for students"],
+  "author": "Masiga Allan",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.1",
