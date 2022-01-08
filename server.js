@@ -4,9 +4,12 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
+const path = require("path");
+const fs = require("fs");
+const mailgun = require("mailgun-js");
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "uploads"));
+    cb(null, "uploads");
   },
   filename: function (req, file, cb) {
     /*Appending extension with original name*/
@@ -15,11 +18,7 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({ storage: storage });
-const path = require("path");
-const fs = require("fs");
-const mailgun = require("mailgun-js");
-const DOMAIN = process.env.DOMAIN_NAME;
-const mg = mailgun({apiKey: process.env.API_KEY, domain: DOMAIN});
+const mg = mailgun({apiKey: process.env.API_KEY, domain: process.env.DOMAIN_NAME});
 
 const app = express();
 
@@ -30,14 +29,6 @@ app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// const transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   host: "smtp.gmail.com",
-//   auth: {
-//     user: process.env.EMAIL,
-//     pass: process.env.PASSWORD,
-//   },
-// });
 
 
 
