@@ -32,11 +32,14 @@
 
 //If user is logged in allow them to only access the /user-dashboard route and resources route
 if(userData){
+ 
   if(hasURL('/user-dashboard') || hasURL('/resources') || hasURL('/file')){
+    //do nothing
     
   }else{
+   
     if(hasURL('/login') || hasURL('/signup')){
-  
+
   window.location.href = '/user-dashboard';
   }
    
@@ -59,6 +62,7 @@ if(userData){
   }
 }
 }else{
+ 
   if(hasURL('/user-dashboard') || hasURL('/upload')){
     window.location.href = '/login';
   }

@@ -4,63 +4,95 @@ const ejs = require("ejs");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const multer = require("multer");
-const upload = multer();
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    /*Appending extension with original name*/
+    cb(null, file.originalname) 
+  }
+})
+
+var upload = multer({ storage: storage });
 const path = require("path");
 const fs = require("fs");
-
+const mailgun = require("mailgun-js");
+const DOMAIN = process.env.DOMAIN_NAME;
+const mg = mailgun({apiKey: process.env.API_KEY, domain: DOMAIN});
 const { join } = require("path");
 
 const app = express();
 
-//Change filename set by multer back to default with the right extension
-
-
-//Creating file in working directory with the right extension
-
+//Save file to files folder
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.PASSWORD,
-  },
-});
+// const transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   host: "smtp.gmail.com",
+//   auth: {
+//     user: process.env.EMAIL,
+//     pass: process.env.PASSWORD,
+//   },
+// });
 
-app.post("/contribution", upload.single("content"), (req, res) => {
+
+
+
+app.post("/contribution", upload.array('content', 10), async (req, res) => {
   const { name, details, email, uid } = req.body;
   const msg = `Name: ${name}\nEmail: ${email}\nDetails: ${details}\nUser ID: ${uid}`;
 
-  const mailOptions = {
-    from: "sta98no@gmail.com",
-    subject: "Contribution Form Data",
-    to: "masigaallan032@gmail.com",
-    text: msg,
-    attachments: [
-      {
-        filename: req.file.originalname,
-        path: req.file.path,
-        content: req.file.path,
-      },
-    ],
-  };
 
-  transporter.sendMail(mailOptions, function (error, info) {
+// Create an array with the file path and the file name for each file in the array
+const attachments = req.files.map((file) => {
+ return new mg.Attachment({
+  data: file.path,
+  filename: file.originalname
+  })
+});
+
+
+  const data = {
+    from: 'Contribution <me@samples.mailgun.org>',
+    to: 'sootamahima@gmail.com',
+    subject: 'User Contributions',
+    text: msg,
+    attachment: attachments
+  
+  };
+  
+   mg.messages().send(data, function (error, body) {
     if (error) {
-      console.log(error);
-     
-      res.redirect("/contribution-failed");
-    } else {
-      console.log("Email sent: " + info.response);
-      
-      res.redirect("/contribution-success");
-    }
+          console.log(error);
+          //Delete each file in the uploads folder
+          
+          req.files.forEach((file) => {
+            fs.unlink(file.path, (err) => {
+              if (err) console.log(err);
+              console.log('File deleted');
+            });
+          });
+        
+          res.redirect("/contribution-failed");
+        } else {
+          console.log(body);
+          req.files.forEach((file) => {
+            fs.unlink(file.path, (err) => {
+              if (err) console.log(err);
+              console.log('File deleted');
+            });
+          });
+        
+          res.redirect("/contribution-success");
+        }
   });
+
+
 });
 
 
