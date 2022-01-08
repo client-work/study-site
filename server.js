@@ -67,12 +67,12 @@ const attachments = req.files.map((file) => {
   
    mg.messages().send(data, function (error, body) {
     if (error) {
-          console.log(error);
+         res.send(error)
           //Delete each file in the uploads folder
           
           req.files.forEach((file) => {
             fs.unlink(file.path, (err) => {
-              if (err) console.log(err);
+              if (err) res.send(err);
               console.log('File deleted');
             });
           });
@@ -82,7 +82,7 @@ const attachments = req.files.map((file) => {
           console.log(body);
           req.files.forEach((file) => {
             fs.unlink(file.path, (err) => {
-              if (err) console.log(err);
+              if (err) res.send(err);
               console.log('File deleted');
             });
           });
