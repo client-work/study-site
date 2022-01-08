@@ -6,7 +6,7 @@ const nodemailer = require("nodemailer");
 const multer = require("multer");
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/')
+    cb(null, path.join(__dirname, "uploads"));
   },
   filename: function (req, file, cb) {
     /*Appending extension with original name*/
@@ -20,7 +20,6 @@ const fs = require("fs");
 const mailgun = require("mailgun-js");
 const DOMAIN = process.env.DOMAIN_NAME;
 const mg = mailgun({apiKey: process.env.API_KEY, domain: DOMAIN});
-const { join } = require("path");
 
 const app = express();
 
@@ -132,5 +131,6 @@ app.get("/contribution-failed", (req, res) =>
 app.get("*", (req, res) => res.status(404).render("404"));
 
 port = process.env.PORT || 3000;
+
 
 app.listen(port, () => console.log(`App running on port ${port}`));
