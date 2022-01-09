@@ -94,7 +94,7 @@ app.post('/humanity-test', (req, res) => {
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${resp}`;
 request(url, (err, res, body) => {
 const bod = JSON.parse(body);
-
+if(err) console.log(err);
 if(!bod.success || bod.success == undefined){
   return   res.json({"success": false});
 }
