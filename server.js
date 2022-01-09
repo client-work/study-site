@@ -102,19 +102,14 @@ app.post('/humanity-test', (req, res) => {
 // return res.json({"success": true});
 // })
 
-fetch(url, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
-}).then(res => res.json())
+fetch(url).then(res => res.json())
   .then(json => {
     if (json.success) {
       return res.json({"success": true});
     }
     return res.json({"success": false});
   });
-  
+
 
 })
 
