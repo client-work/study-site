@@ -50,7 +50,7 @@ const attachments = req.files.map((file) => {
 
 
   const data = {
-    from: 'Contribution <me@samples.mailgun.org>',
+    from: 'Contributions <me@samples.mailgun.org>',
     to: 'sootamahima@gmail.com',
     subject: 'User Contributions',
     text: msg,
@@ -90,12 +90,12 @@ const attachments = req.files.map((file) => {
 
 app.post('/humanity-test', (req, res) => {
   const secret = '6LezxQAeAAAAAJRh3PKgzA71SPF0hwzYqN8uD9lg'
-  const res = req.body.response;
-  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${res}`;
+  const resp = req.body.response;
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${resp}`;
 request(url, (err, res, body) => {
-const body = JSON.parse(body);
+const bod = JSON.parse(body);
 
-if(!body.success || body.success == undefined){
+if(!bod.success || bod.success == undefined){
   return   res.json({"success": false});
 }
 
