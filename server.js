@@ -7,6 +7,8 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const mailgun = require("mailgun-js");
+//require request module
+const request = require("request");
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads");
@@ -85,6 +87,21 @@ const attachments = req.files.map((file) => {
 
 });
 
+
+app.post('/humanity-test', (req, res) => {
+  const secret = '6LezxQAeAAAAAJRh3PKgzA71SPF0hwzYqN8uD9lg'
+  const res = req.body.response;
+  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${res}`;
+request(url, (err, res, body) => {
+const body = JSON.parse(body);
+
+if(!body.success || body.success == undefined){
+  return   res.json({"success": false});
+}
+
+return res.json({"success": true});
+})
+})
 
 
 // *********** ROUTES **************//
