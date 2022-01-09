@@ -92,15 +92,30 @@ app.post('/humanity-test', (req, res) => {
   const secret = '6LezxQAeAAAAAJRh3PKgzA71SPF0hwzYqN8uD9lg'
   const resp = req.body.response;
   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${resp}`;
-request(url, (err, res, body) => {
-const bod = JSON.parse(body);
-if(err) console.log(err);
-if(!bod.success || bod.success == undefined){
-  return   res.json({"success": false});
-}
+// request(url, (err, res, body) => {
+// const bod = JSON.parse(body);
+// if(err) console.log(err);
+// if(!bod.success || bod.success == undefined){
+//   return   res.json({"success": false});
+// }
 
-return res.json({"success": true});
-})
+// return res.json({"success": true});
+// })
+
+fetch(url, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+}).then(res => res.json())
+  .then(json => {
+    if (json.success) {
+      return res.json({"success": true});
+    }
+    return res.json({"success": false});
+  });
+  
+
 })
 
 
