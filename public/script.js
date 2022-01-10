@@ -1266,7 +1266,7 @@ const fetchData = (currPage) => {
         distance: 100,
         maxPatternLength: 32,
         minMatchCharLength: 1,
-        keys: ["data.title", "data.description"],
+        keys: ["data.title", "data.description", "data.subject", "data.className"],
       });
 
       $(".main-content").empty();
