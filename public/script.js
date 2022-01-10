@@ -248,6 +248,8 @@ if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
 
+
+
 const auth = new firebase.auth();
 const storage = firebase.storage();
 const db = firebase.firestore();
@@ -358,11 +360,9 @@ if (
 const localGet = (redirect) => {
   const data = localStorage.getItem("userData");
   if (!data) {
-    
     if (redirect) replaceURL("/login");
     return toast("w", "Please log In to continue");
   } else {
-   
     const { email, name, photoURL, educationLevel, emailVerified } =
       JSON.parse(data);
 
@@ -477,7 +477,7 @@ class Auth {
       .then(() => {
         auth
           .signInWithPopup(provider)
-          .then( async (result) => {
+          .then(async (result) => {
             const {
               displayName: name,
               email,
@@ -487,14 +487,13 @@ class Auth {
             } = result.user;
 
             //Check if user does not exist aand add data else just redirect to dashboard
-         await   userRef
+            await userRef
               .doc(uid)
               .get()
               .then((doc) => {
                 //Assign education level if user exists
 
                 if (doc.exists) {
-
                   const { educationLevel, photoURL } = doc.data();
                   const userData = {
                     email,
@@ -504,13 +503,11 @@ class Auth {
                     emailVerified,
                     uid,
                   };
-                  
-                  emailVerified ?  localSet(userData) : toast("w", "Please Verify your email to continue");
-                  
 
-
+                  emailVerified
+                    ? localSet(userData)
+                    : toast("w", "Please Verify your email to continue");
                 } else {
-                  
                   const educationLevel = "";
                   addToDB(email, uid, name, educationLevel, photoURL);
                   const userData = {
@@ -521,9 +518,10 @@ class Auth {
                     emailVerified,
                     uid,
                   };
-                  
-                  emailVerified ?  localSet(userData) : toast("w", "Please Verify your email to continue");
 
+                  emailVerified
+                    ? localSet(userData)
+                    : toast("w", "Please Verify your email to continue");
                 }
               })
               .catch((err) => {
@@ -532,17 +530,13 @@ class Auth {
             return emailVerified;
           })
           .then((verified) => {
-            
-            if (verified){
-              
-              toast("s", 'Please wait as we redirect you');
+            if (verified) {
+              toast("s", "Please wait as we redirect you");
 
               setTimeout(() => {
                 replaceURL("/user-dashboard");
               }, 2000);
-             
             }
-            
           })
           .catch((err) => {
             err.message.includes("Duplicate")
@@ -569,8 +563,6 @@ class Auth {
       });
   }
 }
-
-//reset contribution form
 
 // Get Curret User Infor
 
@@ -600,7 +592,7 @@ const getUser = (redirect) => {
           replaceURL("/login");
           return;
         }
-      emailVerified &&  localGet(redirect);
+        emailVerified && localGet(redirect);
       });
   });
 };
@@ -635,13 +627,12 @@ $(".sign-up-form").submit((e) => {
   } else {
     if ($("#agree").is(":checked")) {
       loader(false);
-        EmailAuth.signUp(
+      EmailAuth.signUp(
         $("#email").val(),
         $("#edu-level").val(),
         $("#name").val(),
         $("#password").val()
       );
-     
     } else {
       $(".agree-error").removeClass("d-none");
     }
@@ -656,10 +647,10 @@ $("#agree").change((e) => {
 //   // const secret = '6LezxQAeAAAAAJRh3PKgzA71SPF0hwzYqN8uD9lg'
 //  const res =  $('#g-recaptcha-response').val()
 //  console.log(res)
-//  //Send data to server 
-  
+//  //Send data to server
+
 // if(res == null || res == '' || res == undefined){
-//   toast("w", "Please check the recaptcha checkbox To continue") 
+//   toast("w", "Please check the recaptcha checkbox To continue")
 //   loader(true)
 //   return false
 // }
@@ -668,7 +659,7 @@ $("#agree").change((e) => {
 // fetch('/humanity-test', {
 //   method: 'POST',
 //   headers: {
-    
+
 //     'Content-Type': 'application/json'
 //     },
 //     body: JSON.stringify({
@@ -687,8 +678,6 @@ $("#agree").change((e) => {
 //     }
 //   }).catch(err => console.log(err))
 
-
-
 //   // fetch(url,
 //   // {
 //   //   method: 'POST',
@@ -705,13 +694,13 @@ $("#agree").change((e) => {
 //   //     if(data.success){
 //   //       return true
 //   //     }else{
-//   //       toast("e", "Failed Captcha verification") 
+//   //       toast("e", "Failed Captcha verification")
 //   //       loader(true)
 //   //       return false
 //   //     }
 //   //   }
 //   // ).catch(err => {
-//   //   toast("e", "An error occured") 
+//   //   toast("e", "An error occured")
 //   //   loader(true)
 //   //   return false
 //   // }
@@ -719,14 +708,12 @@ $("#agree").change((e) => {
 
 // }
 
-
 // Email Log In
 $(".log-in-form").submit((e) => {
   e.preventDefault();
   $(".user-not-found").addClass("d-none");
   loader(false);
-   EmailAuth.signIn($("#email").val(), $("#password").val());
-  
+  EmailAuth.signIn($("#email").val(), $("#password").val());
 });
 
 //Log Out
@@ -786,6 +773,8 @@ $(".reset-pass-form").submit((e) => {
   const email = e.target[0].value;
   EmailAuth.resetPassword(email);
 });
+
+
 
 //Resend Verification Email
 
@@ -887,7 +876,7 @@ $("document").ready((e) => {
         const description = descriptions[i];
         const className = classes[i];
         const subject = subjects[i];
-        
+
         await db
           .collection("resources")
           .add({
@@ -898,9 +887,10 @@ $("document").ready((e) => {
             subject,
             created_At: fieldValue.serverTimestamp(),
           })
-          .then( async (e) => {
+          .then(async (e) => {
             if (userId != "") {
-           await    db.collection("users")
+              await db
+                .collection("users")
                 .doc(userId)
                 .update({
                   contributions: firebase.firestore.FieldValue.arrayUnion({
@@ -1028,14 +1018,72 @@ const addToDashView = (data, prev) => {
   }
 };
 
-const favouriteFileHandler = (onload = false, currPage) => {
+const handleLikeAction = (id, collRef) => {
+  $(".fav-icon").addClass("d-none");
+  $(".fav-spin").removeClass("d-none");
+  resourcesRef
+    .doc(id)
+    .get()
+    .then((doc) => {
+      const { title, fileURL } = doc.data();
+      const faveData = { id, fileURL, title };
+      if ($(".fav-icon").hasClass("bi-heart")) {
+        collRef
+          .update({
+            favouriteNotes: firebase.firestore.FieldValue.arrayUnion(faveData),
+          })
+          .then((e) => {
+            $(".fav-spin").addClass("d-none");
+            $(".fav-icon").removeClass("d-none");
+            $(".fav-icon").removeClass("bi-heart").addClass("bi-heart-fill");
+          })
+          .catch((err) => {
+            toast("e", err.message);
+            $(".fav-spin").addClass("d-none");
+
+            $(".fav-icon").removeClass("d-none");
+            $(".fav-icon").addClass("bi-heart").removeClass("bi-heart-fill");
+          });
+      } else {
+        collRef
+          .update({
+            favouriteNotes: firebase.firestore.FieldValue.arrayRemove(faveData),
+          })
+          .then((e) => {
+            $(".fav-spin").addClass("d-none");
+            $(".fav-icon").removeClass("d-none");
+            $(".fav-icon").addClass("bi-heart").removeClass("bi-heart-fill");
+          })
+          .catch((err) => {
+            $(".fav-spin").addClass("d-none");
+            $(".fav-icon").removeClass("d-none");
+            $(".fav-icon").addClass("bi-heart").removeClass("bi-heart-fill");
+            console.log(err);
+          });
+      }
+    })
+
+    .catch((err) => {
+      toast("e", err.message);
+      $(".fav-spin").addClass("d-none");
+
+      $(".fav-icon").removeClass("d-none");
+      $(".fav-icon").addClass("bi-heart").removeClass("bi-heart-fill");
+    });
+};
+
+const favouriteFileHandler = (onLoad,  click) => {
   if (!localStorage.getItem("userData")) return;
   const { uid } = JSON.parse(localStorage.getItem("userData"));
-
+const currPage = 1;
   const id = localStorage.getItem("fileId");
   const collRef = userRef.doc(uid);
   const startAt = (currPage - 1) * 2,
     endAt = 2 * currPage;
+
+    if(click){
+      handleLikeAction(id, collRef);
+    }
 
   collRef
     .get()
@@ -1043,9 +1091,8 @@ const favouriteFileHandler = (onload = false, currPage) => {
       const fNotes = doc.data().favouriteNotes;
       const prev = doc.data().previouslyVisited;
       const contributions = doc.data().contributions;
-      
+
       if (contributions.length == 0) {
-        console.log('No contributions')
         $(".contributions-loader").addClass("d-none");
         $(".contribution-info-cont").html(
           "<h4 class='text-center text-info'>There's Nothing In This View</h4>"
@@ -1074,11 +1121,8 @@ const favouriteFileHandler = (onload = false, currPage) => {
 
         $(".prev-load").addClass("d-none");
         slicedData.map((file) => addToDashView(file, true));
-       
-        
-        if (prev.length > 2) {  
 
-
+        if (prev.length > 2) {
           $("#prev-btns").pagination({
             total: prev.length,
             ...jqueryPaginationData,
@@ -1094,7 +1138,6 @@ const favouriteFileHandler = (onload = false, currPage) => {
             },
           });
         }
-       
       }
 
       if (fNotes.length == 0) {
@@ -1119,7 +1162,7 @@ const favouriteFileHandler = (onload = false, currPage) => {
         });
       }
 
-      if (onload) {
+      if (onLoad) {
         for (let i of fNotes) {
           if (i.id == id) {
             $(".fav-icon").hasClass("bi-heart") &&
@@ -1129,94 +1172,21 @@ const favouriteFileHandler = (onload = false, currPage) => {
 
         return;
       }
-
-      if ($(".fav-icon").hasClass("bi-heart")) {
-        resourcesRef
-          .doc(id)
-          .get()
-          .then((doc) => {
-            const { title, fileURL } = doc.data();
-            const faveData = { id, fileURL, title };
-            //get user favourite notes
-            collRef.get().then((doc) => {
-              const fNotes = doc.data().favouriteNotes;
-              const favouriteNotes = fNotes.concat(faveData);
-
-              $(".fav-spin").removeClass("d-none");
-              $(".fav-icon").addClass("d-none");
-              $(".fav-icon").removeClass("bi-heart").addClass("bi-heart-fill");
-
-              collRef
-                .update({ favouriteNotes })
-                .then((e) => {
-                  $(".fav-spin").addClass("d-none");
-                  $(".fav-icon").removeClass("d-none");
-                  $(".fav-icon")
-                    .removeClass("bi-heart")
-                    .addClass("bi-heart-fill");
-                })
-                .catch((err) => {
-                  toast("e", err.message);
-                  $(".fav-spin").addClass("d-none");
-
-                  $(".fav-icon").removeClass("d-none");
-                  $(".fav-icon")
-                    .addClass("bi-heart")
-                    .removeClass("bi-heart-fill");
-                });
-            });
-          })
-          .catch((err) => {
-            toast("e", err.message);
-            $(".fav-spin").addClass("d-none");
-
-            $(".fav-icon").removeClass("d-none");
-            $(".fav-icon").addClass("bi-heart").removeClass("bi-heart-fill");
-          });
-      } else {
-        $(".fav-icon").removeClass("bi-heart-fill").addClass("bi-heart");
-        $(".fav-spin").removeClass("d-none");
-        $(".fav-icon").addClass("d-none");
-
-        //Check if favourite note already exists
-
-        const index = fNotes.findIndex((val) => val.id == data.id);
-        for (let i of fNotes) {
-          if (i.id == data.id) {
-            fNotes.splice(index, 1);
-
-            collRef
-              .update({ favouriteNotes: fNotes })
-              .then((e) => {
-                $(".fav-spin").addClass("d-none");
-                $(".fav-icon").removeClass("d-none");
-              })
-              .catch((err) => {
-                $(".fav-spin").addClass("d-none");
-                $(".fav-icon").removeClass("d-none");
-                $(".fav-icon")
-                  .addClass("bi-heart")
-                  .removeClass("bi-heart-fill");
-                console.log(err);
-              });
-          }
-        }
-      }
     })
-    .catch((e) => console.log(e));
+    .catch((e) => toast("e", err.message));
 };
 
 if (
   window.location.pathname.includes("/file") ||
   window.location.pathname.includes("/user-dashboard")
 ) {
-  favouriteFileHandler((onload = true), 1);
+  favouriteFileHandler(true, false);
 }
 
 $(".fav-icon").click((e) => {
   if (!localStorage.getItem("userData"))
     return toast("w", "Please log in to continue");
-  favouriteFileHandler();
+  favouriteFileHandler(false, true);
 });
 
 //Add Loading skeleton to Resources page  View
@@ -1240,7 +1210,9 @@ while (i < 3) {
 //Add Data from database to View
 const addToView = (doc, search = false) => {
   const resourcesContainer = $(".main-content");
-  const { title, description, created_At, subject, className } = search ? doc.data : doc.data();
+  const { title, description, created_At, subject, className } = search
+    ? doc.data
+    : doc.data();
   const id = doc.id;
 
   const cardData = `
@@ -1445,7 +1417,6 @@ if (window.location.pathname.includes("/file")) {
   filePageHandler();
 }
 
-
 //Function for searching data on input change and populate the view
 const searchData = (value) => {
   if (value === "") {
@@ -1478,11 +1449,6 @@ $("#resource-search").on("input", (e) => {
 });
 
 //Jquery Pagination
-
-
-
-
-
 
 !(function (a) {
   "use strict";
@@ -1656,203 +1622,182 @@ $("#resource-search").on("input", (e) => {
     });
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if(window.location.href.includes('dashboard'))
-{
-$(document).ready(() => {
-
-
-
-
-
-  !(function (a) {
-    "use strict";
-    "function" == typeof define && define.amd
-      ? define(["jquery"], a)
-      : "function" == typeof define && define.cmd
-      ? define(function (b, c, d) {
-          a(b("jquery"));
-        })
-      : a(jQuery);
-  })(function (a) {
-    "use strict";
-    var b = function (c, d) {
-      (this.$target = c),
-        (this.options = a.extend(
-          {},
-          b.DEFAULTS,
-          this.$target.data("pagination"),
-          "object" == typeof d && d
-        )),
-        this.init();
-    };
-    (b.VERSION = "1.4.0"),
-      (b.DEFAULTS = {
-        total: 1,
-        current: 1,
-        length: 10,
-        size: 2,
-        prev: "&lt;",
-        next: "&gt;",
-        click: function (a) {},
-      }),
-      (b.prototype = {
-        init: function () {
-          if (
-            (this.options.total < 1 && (this.options.total = 1),
-            this.options.current < 1 && (this.options.current = 1),
-            this.options.length < 1 && (this.options.length = 1),
-            this.options.current >
-              Math.ceil(this.options.total / this.options.length) &&
-              (this.options.current = Math.ceil(
-                this.options.total / this.options.length
+if (window.location.href.includes("dashboard")) {
+  $(document).ready(() => {
+    !(function (a) {
+      "use strict";
+      "function" == typeof define && define.amd
+        ? define(["jquery"], a)
+        : "function" == typeof define && define.cmd
+        ? define(function (b, c, d) {
+            a(b("jquery"));
+          })
+        : a(jQuery);
+    })(function (a) {
+      "use strict";
+      var b = function (c, d) {
+        (this.$target = c),
+          (this.options = a.extend(
+            {},
+            b.DEFAULTS,
+            this.$target.data("pagination"),
+            "object" == typeof d && d
+          )),
+          this.init();
+      };
+      (b.VERSION = "1.4.0"),
+        (b.DEFAULTS = {
+          total: 1,
+          current: 1,
+          length: 10,
+          size: 2,
+          prev: "&lt;",
+          next: "&gt;",
+          click: function (a) {},
+        }),
+        (b.prototype = {
+          init: function () {
+            if (
+              (this.options.total < 1 && (this.options.total = 1),
+              this.options.current < 1 && (this.options.current = 1),
+              this.options.length < 1 && (this.options.length = 1),
+              this.options.current >
+                Math.ceil(this.options.total / this.options.length) &&
+                (this.options.current = Math.ceil(
+                  this.options.total / this.options.length
+                )),
+              this.options.size < 1 && (this.options.size = 1),
+              "function" == typeof this.options.ajax)
+            ) {
+              var a = this;
+              this.options.ajax(
+                {
+                  current: a.options.current,
+                  length: a.options.length,
+                  total: a.options.total,
+                },
+                function (b) {
+                  return a.refresh(b);
+                },
+                a.$target
+              );
+            } else this.render();
+            this.onClick();
+          },
+          render: function () {
+            var a = this.options,
+              b = this.$target;
+            b.empty(),
+              b.append(
+                '<li><a herf="javascript:void(0)" data-page="prev">' +
+                  a.prev +
+                  "</a></li>"
+              );
+            var c = this.getPages();
+            c.start > 1 &&
+              (b.append(
+                '<li><a herf="javascript:void(0)" data-page="1">1</a></li>'
+              ),
+              b.append("<li><span>...</span></li>"));
+            for (var d = c.start; d <= c.end; d++)
+              b.append(
+                '<li><a herf="javascript:void(0)" data-page="' +
+                  d +
+                  '">' +
+                  d +
+                  "</a></li>"
+              );
+            c.end < Math.ceil(a.total / a.length) &&
+              (b.append("<li><span>...</span></li>"),
+              b.append(
+                '<li><a herf="javascript:void(0)" data-page="' +
+                  Math.ceil(a.total / a.length) +
+                  '">' +
+                  Math.ceil(a.total / a.length) +
+                  "</a></li>"
               )),
-            this.options.size < 1 && (this.options.size = 1),
-            "function" == typeof this.options.ajax)
-          ) {
-            var a = this;
-            this.options.ajax(
-              {
-                current: a.options.current,
-                length: a.options.length,
-                total: a.options.total,
-              },
-              function (b) {
-                return a.refresh(b);
-              },
-              a.$target
+              b.append(
+                '<li><a herf="javascript:void(0)" data-page="next">' +
+                  a.next +
+                  "</a></li>"
+              ),
+              b
+                .find('li>a[data-page="' + a.current + '"]')
+                .parent()
+                .addClass("active"),
+              a.current <= 1 &&
+                b.find('li>a[data-page="prev"]').parent().addClass("disabled"),
+              a.current >= Math.ceil(a.total / a.length) &&
+                b.find('li>a[data-page="next"]').parent().addClass("disabled");
+          },
+          getPages: function () {
+            var a = (this.$target, this.options),
+              b = a.current - a.size,
+              c = a.current + a.size;
+            return (
+              a.current >= Math.ceil(a.total / a.length) - a.size &&
+                (b -= a.current - Math.ceil(a.total / a.length) + a.size),
+              a.current <= a.size && (c += a.size - a.current + 1),
+              b < 1 && (b = 1),
+              c > Math.ceil(a.total / a.length) &&
+                (c = Math.ceil(a.total / a.length)),
+              { start: b, end: c }
             );
-          } else this.render();
-          this.onClick();
-        },
-        render: function () {
-          var a = this.options,
-            b = this.$target;
-          b.empty(),
-            b.append(
-              '<li><a herf="javascript:void(0)" data-page="prev">' +
-                a.prev +
-                "</a></li>"
-            );
-          var c = this.getPages();
-          c.start > 1 &&
-            (b.append(
-              '<li><a herf="javascript:void(0)" data-page="1">1</a></li>'
-            ),
-            b.append("<li><span>...</span></li>"));
-          for (var d = c.start; d <= c.end; d++)
-            b.append(
-              '<li><a herf="javascript:void(0)" data-page="' +
-                d +
-                '">' +
-                d +
-                "</a></li>"
-            );
-          c.end < Math.ceil(a.total / a.length) &&
-            (b.append("<li><span>...</span></li>"),
-            b.append(
-              '<li><a herf="javascript:void(0)" data-page="' +
-                Math.ceil(a.total / a.length) +
-                '">' +
-                Math.ceil(a.total / a.length) +
-                "</a></li>"
-            )),
-            b.append(
-              '<li><a herf="javascript:void(0)" data-page="next">' +
-                a.next +
-                "</a></li>"
-            ),
-            b
-              .find('li>a[data-page="' + a.current + '"]')
-              .parent()
-              .addClass("active"),
-            a.current <= 1 &&
-              b.find('li>a[data-page="prev"]').parent().addClass("disabled"),
-            a.current >= Math.ceil(a.total / a.length) &&
-              b.find('li>a[data-page="next"]').parent().addClass("disabled");
-        },
-        getPages: function () {
-          var a = (this.$target, this.options),
-            b = a.current - a.size,
-            c = a.current + a.size;
-          return (
-            a.current >= Math.ceil(a.total / a.length) - a.size &&
-              (b -= a.current - Math.ceil(a.total / a.length) + a.size),
-            a.current <= a.size && (c += a.size - a.current + 1),
-            b < 1 && (b = 1),
-            c > Math.ceil(a.total / a.length) &&
-              (c = Math.ceil(a.total / a.length)),
-            { start: b, end: c }
-          );
-        },
-        onClick: function () {
-          var b = this.$target,
-            c = this.options,
-            d = this;
-          b.off("click"),
-            b.on("click", ">li>a[data-page]", function (e) {
-              if (
-                !a(this).parent().hasClass("disabled") &&
-                !a(this).parent().hasClass("active")
-              ) {
-                var f = a(this).data("page");
-                switch (f) {
-                  case "prev":
-                    c.current > 1 && c.current--;
-                    break;
-                  case "next":
-                    c.current < Math.ceil(c.total) && c.current++;
-                    break;
-                  default:
-                    (f = parseInt(f)), isNaN(f) || (c.current = parseInt(f));
+          },
+          onClick: function () {
+            var b = this.$target,
+              c = this.options,
+              d = this;
+            b.off("click"),
+              b.on("click", ">li>a[data-page]", function (e) {
+                if (
+                  !a(this).parent().hasClass("disabled") &&
+                  !a(this).parent().hasClass("active")
+                ) {
+                  var f = a(this).data("page");
+                  switch (f) {
+                    case "prev":
+                      c.current > 1 && c.current--;
+                      break;
+                    case "next":
+                      c.current < Math.ceil(c.total) && c.current++;
+                      break;
+                    default:
+                      (f = parseInt(f)), isNaN(f) || (c.current = parseInt(f));
+                  }
+                  var g = {
+                    current: c.current,
+                    length: c.length,
+                    total: c.total,
+                  };
+                  "function" == typeof c.ajax
+                    ? c.ajax(
+                        g,
+                        function (a) {
+                          return d.refresh(a);
+                        },
+                        b
+                      )
+                    : d.render(),
+                    c.click(g, b);
                 }
-                var g = { current: c.current, length: c.length, total: c.total };
-                "function" == typeof c.ajax
-                  ? c.ajax(
-                      g,
-                      function (a) {
-                        return d.refresh(a);
-                      },
-                      b
-                    )
-                  : d.render(),
-                  c.click(g, b);
-              }
-            });
-        },
-        refresh: function (a) {
-          "object" == typeof a &&
-            (a.total && (this.options.total = a.total),
-            a.length && (this.options.length = a.length)),
-            this.render();
-        },
-      }),
-      (a.fn.pagination = function (c) {
-        return (
-          this.each(function () {
-            a(this).data("pagination", new b(a(this), c));
-          }),
-          this
-        );
-      });
+              });
+          },
+          refresh: function (a) {
+            "object" == typeof a &&
+              (a.total && (this.options.total = a.total),
+              a.length && (this.options.length = a.length)),
+              this.render();
+          },
+        }),
+        (a.fn.pagination = function (c) {
+          return (
+            this.each(function () {
+              a(this).data("pagination", new b(a(this), c));
+            }),
+            this
+          );
+        });
+    });
   });
-  
-
-
-})
 }
