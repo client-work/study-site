@@ -817,7 +817,10 @@ input[checkbox] {
     }
 
     .card-body{
-      
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      width: 100%;
     }
 }
 @media screen and (max-width: 320px) {
