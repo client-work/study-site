@@ -808,8 +808,16 @@ input[checkbox] {
 }
 @media screen and (max-width: 425px) {
     .my-login-page .card-wrapper {
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
+    }
+
+    .card{
+      width: 100%;
+    }
+
+    .card-body{
+      
     }
 }
 @media screen and (max-width: 320px) {
@@ -818,6 +826,7 @@ input[checkbox] {
     }
     .my-login-page .card.fat .card-body {
         padding: 15px;
+        width: 100%;
     }
 }
 .skel-loader-cont > div {
@@ -1175,10 +1184,9 @@ skel-loader-cont {
 @media (max-width: 991px) {
     .modal-content {
         background-color: #fefefe;
-        margin: auto;
         padding: 20px;
         border: 1px solid #888;
-        width: 80%;
+        width: 95%;
     }
 }
 .toast {
