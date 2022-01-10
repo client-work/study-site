@@ -88,30 +88,30 @@ const attachments = req.files.map((file) => {
 });
 
 
-app.post('/humanity-test', (req, res) => {
-  const secret = '6LezxQAeAAAAAJRh3PKgzA71SPF0hwzYqN8uD9lg'
-  const resp = req.body.response;
-  const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${resp}`;
-// request(url, (err, res, body) => {
-// const bod = JSON.parse(body);
-// if(err) console.log(err);
-// if(!bod.success || bod.success == undefined){
-//   return   res.json({"success": false});
-// }
+// app.post('/humanity-test', (req, res) => {
+//   const secret = '6LezxQAeAAAAAJRh3PKgzA71SPF0hwzYqN8uD9lg'
+//   const resp = req.body.response;
+//   const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${resp}`;
+// // request(url, (err, res, body) => {
+// // const bod = JSON.parse(body);
+// // if(err) console.log(err);
+// // if(!bod.success || bod.success == undefined){
+// //   return   res.json({"success": false});
+// // }
 
-// return res.json({"success": true});
+// // return res.json({"success": true});
+// // })
+
+// fetch(url).then(res => res.json())
+//   .then(json => {
+//     if (json.success) {
+//       return res.json({"success": true});
+//     }
+//     return res.json({"success": false});
+//   });
+
+
 // })
-
-fetch(url).then(res => res.json())
-  .then(json => {
-    if (json.success) {
-      return res.json({"success": true});
-    }
-    return res.json({"success": false});
-  });
-
-
-})
 
 
 // *********** ROUTES **************//
